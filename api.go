@@ -85,6 +85,7 @@ type currentWeather struct {
 		WindSpeed10M        string `json:"wind_speed_10m"`
 		WindDirection10M    string `json:"wind_direction_10m"`
 		WindGusts10M        string `json:"wind_gusts_10m"`
+		DewPoint2M          string `json:"dew_point_2m"`
 	} `json:"current_units"`
 	Current struct {
 		// Time of obeservation, iso8601
@@ -106,6 +107,7 @@ type currentWeather struct {
 		WindSpeed10M        float64 `json:"wind_speed_10m"`
 		WindDirection10M    int     `json:"wind_direction_10m"`
 		WindGusts10M        float64 `json:"wind_gusts_10m"`
+		DewPoint2M          float64 `json:"dew_point_2m"`
 	} `json:"current"`
 }
 
@@ -116,7 +118,7 @@ func fetchWeather(ctx context.Context, lat, lng float64) (*currentWeather, error
 	q.Add("latitude", fmt.Sprintf("%f", lat))
 	q.Add("longitude", fmt.Sprintf("%f", lng))
 	// get all the current values. not dealing with forecasts right now
-	q.Add("current", "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m")
+	q.Add("current", "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m,dew_point_2m")
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fmt.Sprintf("%s/v1/forecast?%s", baseURL, q.Encode()), nil)
 	if err != nil {

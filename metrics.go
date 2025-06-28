@@ -41,6 +41,7 @@ var (
 	windSpeed           *prometheus.GaugeVec
 	windDirection       *prometheus.GaugeVec
 	windGusts           *prometheus.GaugeVec
+	dewPoint            *prometheus.GaugeVec
 )
 
 // initializeMetrics must be called before any metrics are created, to set the
@@ -62,6 +63,7 @@ func initializeMetrics(cw currentWeather) {
 	windSpeed = newGauge("wind_speed", "wind speed (10m)", cw.CurrentUnits.WindSpeed10M)
 	windDirection = newGauge("wind_direction", "direction of wind (10m)", cw.CurrentUnits.WindDirection10M)
 	windGusts = newGauge("wind_gusts", "wind gusts (10m)", cw.CurrentUnits.WindGusts10M)
+	dewPoint = newGauge("dew_point", "dew point (2m)", cw.CurrentUnits.DewPoint2M)
 }
 
 func setMetrics(locationName string, cw currentWeather) error {
@@ -92,7 +94,7 @@ func setMetrics(locationName string, cw currentWeather) error {
 	windSpeed.With(lbl).Set(cw.Current.WindSpeed10M)
 	windDirection.With(lbl).Set(float64(cw.Current.WindDirection10M))
 	windGusts.With(lbl).Set(cw.Current.WindGusts10M)
-
+	dewPoint.With(lbl).Set(cw.Current.DewPoint2M)
 	return nil
 }
 
